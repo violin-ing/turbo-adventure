@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>reCAPTCHA Demo</title>
+  <style>
+    body {
+      background: #f0f0f0;
+      font-family: Roboto, Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      padding-top: 50px;
+    }
+
+    .recaptcha-box {
+      width: 400px;
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      padding: 8px;
+    }
+
+    .recaptcha-header {
+      background: #4285f4;
+      color: white;
+      padding: 20px 24px;
+      margin-bottom: 8px;
+    }
+
+    .recaptcha-header small {
+      font-size: 14px;
+      display: block;
+      line-height: 1.2;
+    }
+
+    .recaptcha-header strong {
+      font-size: 28px;
+      font-weight: 900;
+      display: block;
+      margin: 4px 0;
+    }
+
+    .image-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #ccc; /* Fallback color */
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .grid {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      /* This ensures the grid sits ON TOP of the image */
+      z-index: 10; 
+    }
+
+    .cell {
+      cursor: pointer;
+      position: relative;
+      transition: all 0.1s ease;
+      box-sizing: border-box;
+      /* Subtle white border to make the grid visible over the image */
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .cell:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Selection styling */
+    .selected {
+      outline: 4px solid #1a73e8;
+      outline-offset: -4px;
+      transform: scale(0.92);
+      background: rgba(0, 0, 0, 0.1); /* Slight tint to show it's selected */
+    }
+
+    /* The white checkmark icon */
+    .selected::before {
+      content: '✓';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      background: #1a73e8;
+      color: white;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+      z-index: 11;
+    }
+
+    .recaptcha-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 5px 2px 5px;
+      border-top: 1px solid #f1f1f1;
+    }
+
+    .icon-group {
+      display: flex;
+      gap: 15px;
+      color: #737373;
+      font-size: 20px;
+      padding-left: 8px;
+    }
+
+    .verify-btn {
+      background: #4285f4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 2px;
+      cursor: pointer;
+      min-width: 90px;
+    }
+
+    #message {
+      height: 30px;
+      font-size: 13px;
+      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .error { color: #d93025; }
+    .success { color: #188038; font-weight: bold; }
+
+  </style>
+</head>
+<body>
+
+<div class="recaptcha-box">
+  <div class="recaptcha-header">
+    <small>Select all squares that contain a</small>
+    <strong>banana</strong>
+  </div>
+
+  <div class="image-container">
+    <img src="banana.jpg" alt="CAPTCHA">
+    <div class="grid">
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+  </div>
+
+  <div id="message"></div>
+
+  <div class="recaptcha-footer">
+    <div class="icon-group">
+      <span>&#x21BB;</span>
+      <span>&#x1F3A7;</span>
+      <span>&#x24D8;</span>
+    </div>
+    <button class="verify-btn" onclick="verify()">VERIFY</button>
+  </div>
+</div>
+
+<script>
+  const cells = document.querySelectorAll('.cell');
+  const message = document.getElementById('message');
+
+  cells.forEach(cell => {
+    cell.addEventListener('click', () => {
+      cell.classList.toggle('selected');
+      if (message.className === "error") message.textContent = "";
+    });
+  });
+
+  function verify() {
+    const selectedCount = document.querySelectorAll('.selected').length;
+
+    if (selectedCount === 9) {
+      message.textContent = "Verification successful! Redirecting...";
+      message.className = "success";
+      
+      setTimeout(() => {
+        window.location.href = "https://www.e621.net";
+      }, 1200);
+    } else {
+      message.textContent = "Please select all matching squares.";
+      message.className = "error";
+    }
+  }
+</script>
+
+</body>
+</html>
