@@ -42,7 +42,7 @@
       position: relative;
       width: 100%;
       aspect-ratio: 1 / 1;
-      background: #ccc; /* Fallback color */
+      background: #ccc; 
     }
 
     .image-container img {
@@ -61,7 +61,6 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(3, 1fr);
-      /* This ensures the grid sits ON TOP of the image */
       z-index: 10; 
     }
 
@@ -70,7 +69,6 @@
       position: relative;
       transition: all 0.1s ease;
       box-sizing: border-box;
-      /* Subtle white border to make the grid visible over the image */
       border: 1px solid rgba(255, 255, 255, 0.4);
     }
 
@@ -78,15 +76,13 @@
       background: rgba(255, 255, 255, 0.1);
     }
 
-    /* Selection styling */
     .selected {
       outline: 4px solid #1a73e8;
       outline-offset: -4px;
       transform: scale(0.92);
-      background: rgba(0, 0, 0, 0.1); /* Slight tint to show it's selected */
+      background: rgba(0, 0, 0, 0.1); 
     }
 
-    /* The white checkmark icon */
     .selected::before {
       content: '✓';
       position: absolute;
