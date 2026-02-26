@@ -70,11 +70,7 @@
       position: relative;
       transition: all 0.1s ease;
       box-sizing: border-box;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-    }
-
-    .cell:hover {
-      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     .selected {
@@ -82,6 +78,7 @@
       outline-offset: -4px;
       transform: scale(0.92);
       background: rgba(0, 0, 0, 0.1); 
+      z-index: 11;
     }
 
     .selected::before {
@@ -99,7 +96,6 @@
       justify-content: center;
       font-size: 11px;
       font-weight: bold;
-      z-index: 11;
     }
 
     .recaptcha-footer {
@@ -140,7 +136,6 @@
 
     .error { color: #d93025; }
     .success { color: #188038; font-weight: bold; }
-
   </style>
 </head>
 <body>
@@ -181,26 +176,26 @@
 <script>
   const cells = document.querySelectorAll('.cell');
   const message = document.getElementById('message');
+  
+  // These IDs must match the data-id in the HTML
   const correctCells = [0, 1, 3, 4, 6, 7, 8];
 
   cells.forEach(cell => {
     cell.addEventListener('click', () => {
       cell.classList.toggle('selected');
-      if (message.classList.contains("error")) {
-        message.textContent = "";
-        message.className = "";
-      }
+      // Clear message on new interaction
+      message.textContent = "";
+      message.className = "";
     });
   });
 
   function verify() {
     const selected = [];
-    cells.forEach(cell => {
-      if (cell.classList.contains('selected')) {
-        selected.push(parseInt(cell.dataset.id));
-      }
+    document.querySelectorAll('.cell.selected').forEach(cell => {
+      selected.push(parseInt(cell.getAttribute('data-id')));
     });
 
+    // Numerical sort for comparison
     selected.sort((a, b) => a - b);
     const correctSorted = [...correctCells].sort((a, b) => a - b);
 
