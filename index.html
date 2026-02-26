@@ -9,6 +9,7 @@
       display: flex;
       justify-content: center;
       padding-top: 50px;
+      margin: 0;
     }
 
     .recaptcha-box {
@@ -185,7 +186,10 @@
   cells.forEach(cell => {
     cell.addEventListener('click', () => {
       cell.classList.toggle('selected');
-      if (message.className === "error") message.textContent = "";
+      if (message.classList.contains("error")) {
+        message.textContent = "";
+        message.className = "";
+      }
     });
   });
 
@@ -197,8 +201,8 @@
       }
     });
 
-    selected.sort();
-    const correctSorted = [..correctCells].sort();
+    selected.sort((a, b) => a - b);
+    const correctSorted = [...correctCells].sort((a, b) => a - b);
 
     if (JSON.stringify(selected) === JSON.stringify(correctSorted)) {
       message.textContent = "Verification successful! Redirecting...";
